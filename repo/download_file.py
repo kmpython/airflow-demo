@@ -3,15 +3,8 @@ import botocore
 import os
 
 def run(bucket, file):
-    print("the file name is : ")
-    print(file)
-    print(bucket)
-    destination = '/DownloadFolder/'+file
-    #print(destination)
     s3 = boto3.resource('s3')
-    #s3.meta.client.download_file(bucket, file, destination)
     op_dir = os.path.join('/home/ubuntu/repo/DownloadFolder', file)
-    print(op_dir)
     s3.meta.client.download_file(bucket, file, op_dir)
 
 
