@@ -9,5 +9,5 @@ def run():
     for file in os.listdir(INPUT_FOLDER):
         shutil.copy((os.path.join(INPUT_FOLDER, file)), OUTPUT_FOLDER)
 
-    for file in os.listdir(INPUT_FOLDER):
+    for file in os.listdir(DOWNLOAD_FOLDER):
         shutil.copy((os.path.join(DOWNLOAD_FOLDER, file)), OUTPUT_FOLDER)

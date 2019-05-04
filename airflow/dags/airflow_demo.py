@@ -16,12 +16,12 @@ sys.path.append('/home/ubuntu')
 
 from repo import read_csv, combiner, clean_data, download_file
 
-s3_bucket = Variable.get("s3_bucket")
-s3_file = Variable.get("s3_file")
-
+s3_bucket = Variable.get("s3_bucket")               # airflow-bucket
+s3_file = Variable.get("s3_file")                   # airflow-dl-file-num 
+s3_file_trigger = Variable.get("s3-file-trigger")   # airflow-dl-file-*
 
 def push_colname():
-    return 'dept'
+    return 'Dept'
 
 def push_db_environment():
     options = ['branch_prod', 'branch_test', 'branch_dev']
@@ -41,20 +41,21 @@ dag = DAG(
 
 file_sensor = S3KeySensor(
     task_id='check_s3_for_file',
-    bucket_key='file-to-watch-*',
+    bucket_key=s3_file_trigger,
     wildcard_match=True,
     provide_context=False,
-    bucket_name='km-airflow-file',
+    bucket_name=s3_bucket,
     timeout=18*60*60,
     poke_interval=30,
     dag=dag
 )
 
-download_file = PythonOperator(
+
+job_dl_file = PythonOperator(
     task_id='download_file',
     provide_context=False,
     python_callable=download_file.run,
-    op_kwargs={'bucket': s3_bucket, 'file': s3_file},
+    op_kwargs={'bucket': s3_bucket, 'file':s3_file},
     dag=dag
 )
 
@@ -91,14 +92,15 @@ dummy_generate_report=DummyOperator (
     dag=dag
 )
 
-branch_db_env = BranchOperator(
+branch_db_env = BranchPythonOperator(
     task_id='branch_db_env',
     provide_context=False,
     python_callable=push_db_environment,
     dag=dag
 )
 
-file_sensor >> download_file >> job_1_move_files >> job_2_combine_files
+file_sensor >> job_dl_file >> job_1_move_files
+job_1_move_files >> job_2_combine_files
 [job_push_col_name, job_2_combine_files] >> job_3_clean_combine
 job_3_clean_combine >> dummy_generate_report
 job_3_clean_combine >> branch_db_env

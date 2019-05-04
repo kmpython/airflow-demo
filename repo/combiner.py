@@ -10,6 +10,6 @@ def run():
     print("Combining files from output directory")
 
     for file in os.listdir(OUTPUT_FOLDER):
-        base_file = basefile.append(pd.read_csv(os.path.join(OUTPUT_FOLDER, file)))
+        base_file = base_file.append(pd.read_csv(os.path.join(OUTPUT_FOLDER, file)))
 
-    base_file.to_csv('/home/ubuntu/repo/OutputFolder.CombinedOpt.csv', index=False)
+    base_file.to_csv('/home/ubuntu/repo/OutputFolder/CombinedOpt.csv', index=False)
