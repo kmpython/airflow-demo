@@ -41,7 +41,7 @@ In the airflow console webpage
 #### Installing MySQL
 By default, airflow backend comes with a Sqlite database. Sqlite db works well for small tests and poc projects but for prodution we need a more robust database. Also, Sqlite db does not support parallel processing, we will need to change the database to unlock parallel processing capabilites 
 ```
-sudo apt-get updae
+sudo apt-get update
 sudo apt install mysql-server
 ```
  
