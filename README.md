@@ -46,7 +46,7 @@ sudo apt install mysql-server
 ```
  
 #### Configure MySQL
-perform the security setup as required needed
+perform the security setup as required/needed
 
 I have created a new user called `airflow-user` which I will use to access the database  
 I also created a database called airflow  
@@ -62,7 +62,7 @@ on our instance of mysql
 #### Install python modules to talk to airflow
 to configure airflow to use our mysql database we will need to install the drivers/modules so that python can connect with the database  
 NOTE:if you are using python3, we will need to install `mysqlclient` instead of `MySqldb` as MySQLdb is not supported in Python3.x  
-[click here for reference]
+[click here for reference](https://stackoverflow.com/questions/7475223/mysql-config-not-found-when-installing-mysqldb-python-interface)
 
 ```
 # we will need to install prerequsities first
